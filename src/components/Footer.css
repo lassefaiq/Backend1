@@ -1,0 +1,164 @@
+.feature-section {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap; 
+    gap: 100px; 
+    background-color: #FFE4B5;
+    padding: 20px;
+    border-bottom: 2px solid black;
+}
+
+
+.feature-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+.feature-icon {
+    font-size: 30px;
+    color: #333;
+    margin-bottom: 5px;
+}
+
+.feature-item p {
+    font-size: 20px; 
+    color: #333;
+}
+
+
+.footer {
+    width: 100%;
+    background-color: #89CFF0;
+    padding: 20px 0;
+    text-align: center;
+    font-family: 'Gill Sans', 'Trebuchet MS', sans-serif;
+}
+
+
+.footer-container {
+    display: flex;
+    justify-content: space-between; 
+    flex-wrap: wrap;
+    max-width: 1200px;
+    margin: 0 auto;
+    width: 100%;
+    padding: 20px;
+    margin-right: 40px;
+}
+
+
+.footer-column {
+    text-align: left;
+    flex: 1;
+    min-width: 200px; 
+}
+
+.footer-column h3 {
+    font-size: 20px;
+    margin-bottom: 10px;
+}
+
+.footer-column ul {
+    list-style: none;
+    padding: 0;
+}
+
+.footer-column ul li {
+    font-size: 16px;
+    color: #333;
+    margin-bottom: 5px;
+}
+
+
+.accordion-footer {
+    display: none; 
+    width: 100%;
+    background-color: #89CFF0;
+    padding: 10px;
+    text-align: left;
+}
+
+
+.accordion-footer details {
+    margin: 5px 0;
+    background-color: #89CFF0; 
+    padding: 10px;
+    border-radius: 0;
+    border: none;
+}
+
+
+.accordion-footer summary {
+    font-size: 18px;
+    font-weight: bold;
+    cursor: pointer;
+    padding: 10px;
+    background-color: #89CFF0;
+    border: none;
+    width: 100%;
+    text-align: left;
+}
+
+
+.accordion-footer ul {
+    list-style: none;
+    padding-left: 15px;
+    margin: 5px 0;
+}
+
+
+@media (max-width: 639px) {
+    .footer {
+        display: none;
+    }
+
+    .accordion-footer {
+        display: block;
+    }
+}
+
+
+@media (min-width: 640px) and (max-width: 1023px) {
+    .feature-section {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 20px;
+        padding: 20px;
+    }
+
+    .footer-container {
+        text-align: center;
+        flex-direction: column;
+        gap: 20px;
+        padding: 20px;
+    }
+
+    .footer-column {
+        text-align: center;
+    }
+}
+
+
+@media (max-width: 639px) {
+    .feature-section {
+        display: grid;
+        grid-template-columns: repeat(1, 1fr);
+        gap: 20px;
+        padding: 20px;
+    }
+
+    .footer-container {
+        flex-direction: column;
+        text-align: center;
+        gap: 20px;
+        padding: 10px;
+        margin: 0;
+    }
+
+    .footer-column {
+        text-align: center;
+    }
+}
