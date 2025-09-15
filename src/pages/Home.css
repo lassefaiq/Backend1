@@ -1,5 +1,5 @@
 html, body {
-    background-color: #FFE4B5;
+    background-color: #2D4739;
     font-family: 'Gill Sans', 'Gill Sans MT', 'Trebuchet MS', sans-serif, 'Times New Roman', Times, serif;
     margin: 0; 
     padding: 0;
@@ -115,7 +115,7 @@ html, body {
     border: 1px solid #ddd;
     border-radius: 8px;
     transition: transform 0.2s ease-in-out;
-    background-color: #89CFF0;
+    background-color: #FFFFFF;
     min-height: 250px;
 }
 
@@ -159,8 +159,8 @@ html, body {
 
 .product-card {
     position: relative;
-    background-color: #89CFF0;
-    border: 1px solid #ddd;
+    background-color: #FFFFFF;
+    border: 1px solid #000000;
     border-radius: 8px;
     padding: 20px;
     text-align: center;
