@@ -28,21 +28,47 @@ html, body {
 }
 
 .promo-section {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 20px; /* mellanrum mellan produkter */
-    padding: 20px 0; 
-    max-width: 1200px;
-    margin: 0 auto; 
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 20px;
+  padding: 20px 0;
+  max-width: 1200px;
+  margin: 0 auto;
+  position: relative; /* enable absolute positioning for child */
 }
 
 .promo-image {
-    width: 100%;
-    max-width: 350px; 
-    height: auto;
-    object-fit: cover; /* bilderna håller deras proportiom */
-    border-radius: 50%; /* runda hörn */
+  width: 340px;
+  height: 340px;
+  object-fit: cover;
+  border-radius: 50%;
+}
+
+/* The special image */
+.promo-image.promo-extra {
+  position: absolute;
+  bottom: -80px;     /* move it further down */
+  left: 40%;         /* push it more to the left */
+  transform: translateX(-50%);
+  width: 200px;
+  height: 160px;
+}
+
+.promo-image.promo-arrow {
+  position: absolute;
+  top: 60%;       /* vertical position, adjust */
+  right: -275px;      /* distance from the right edge */
+  width: 600px;   /* size of arrow image */
+  height: 300px;   /* keep aspect ratio */
+}
+
+.promo-image.promo-stats {
+  position: absolute;
+  top: 20%;        /* adjust vertical placement */
+  left: -18%;        /* distance from left edge */
+  width: 400px;    /* adjust size */
+  height: 350px;    /* keep proportions */
 }
 
 
