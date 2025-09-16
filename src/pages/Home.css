@@ -27,49 +27,75 @@ html, body {
     margin: 0;
 }
 
+/* --- container (keeps green gutters so overlays can grow) --- */
 .promo-section {
+  --edge-pad: clamp(16px, 5vw, 80px);
+  --safe:     clamp(14px, 2.2vw, 40px);  /* bigger no-touch buffer */
   display: flex;
   justify-content: center;
   align-items: flex-start;
-  gap: 20px;
-  padding: 20px 0;
-  max-width: 1200px;
+  gap: clamp(16px, 3vw, 32px);
+  padding: 20px var(--edge-pad);
+  max-width: 1200px;     /* keep if you want the same page width */
   margin: 0 auto;
-  position: relative; /* enable absolute positioning for child */
+}
+
+.promo-card {
+  position: relative;
+  width: clamp(260px, 32vw, 420px);  /* circle size */
+  aspect-ratio: 1 / 1;
+  overflow: visible;
 }
 
 .promo-image {
-  width: 340px;
-  height: 340px;
+  width: 100%;
+  height: 100%;
   object-fit: cover;
   border-radius: 50%;
 }
 
-/* The special image */
-.promo-image.promo-extra {
-  position: absolute;
-  bottom: -80px;     /* move it further down */
-  left: 40%;         /* push it more to the left */
+/* ---------- overlays (big + with guaranteed gap) ---------- */
+
+.overlay { position: absolute; pointer-events: none; height: auto; }
+
+
+/* LEFT — larger + further out */
+.overlay-left {
+  width: clamp(260px, 30vw, 560px);
+  left: calc(-63% - var(--safe));   /* push further left */
+  top: 40%;
+  transform: translateY(-50%);
+}
+
+/* BOTTOM — larger + lower */
+.overlay-bottom {
+  width: clamp(280px, 36vw, 600px);
+  left: 17%;
+  bottom: calc(-33% - var(--safe)); /* push further down */
   transform: translateX(-50%);
-  width: 200px;
-  height: 160px;
 }
 
-.promo-image.promo-arrow {
-  position: absolute;
-  top: 60%;       /* vertical position, adjust */
-  right: -275px;      /* distance from the right edge */
-  width: 600px;   /* size of arrow image */
-  height: 300px;   /* keep aspect ratio */
+/* RIGHT — larger + further out */
+.overlay-right {
+  width: clamp(260px, 30vw, 560px);
+  right: calc(-60% - var(--safe));  /* push further right */
+  top: 90%;
+  transform: translateY(-50%);
 }
 
-.promo-image.promo-stats {
-  position: absolute;
-  top: 20%;        /* adjust vertical placement */
-  left: -18%;        /* distance from left edge */
-  width: 400px;    /* adjust size */
-  height: 350px;    /* keep proportions */
+/* Your breakpoints */
+@media (max-width: 1024px) {
+  .promo-card     { width: clamp(240px, 34vw, 380px); }
+  .overlay-left   { left: calc(-34% - var(--safe));  width: clamp(200px, 32vw, 440px); }
+  .overlay-right  { right: calc(-32% - var(--safe)); width: clamp(200px, 32vw, 440px); }
+  .overlay-bottom { bottom: calc(-20% - var(--safe)); width: clamp(220px, 32vw, 480px); }
 }
+
+@media (max-width: 640px) {
+  .promo-section { display: none; } /* if you already hide it on small screens */
+}
+
+
 
 
 /* vänster bild */

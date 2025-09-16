@@ -29,13 +29,22 @@ function Home() {
             </header>
 
             <div className="promo-section">
-                <img src="/src/assets/gullit.webp" alt="Promo 1" className="promo-image" />
-                <img src="/src/assets/zlatan.jpg" alt="Promo 2" className="promo-image" />
-                <img src="/src/assets/cruyf.jpg" alt="Promo 3" className="promo-image" />
-                <img src="/src/assets/thegoat.png" alt="Promo 4" className="promo-image promo-extra" />
-                <img src="/src/assets/cruyffarrow.png" alt="Cruyff Arrow" className="promo-image promo-arrow" />
-                <img src="/src/assets/gullitstats.png" alt="Gullit Stats" className="promo-image promo-stats" />
+                <div className="promo-card">
+                    <img src="/src/assets/gullit.webp" alt="Gullit" className="promo-image" />
+                    <img src="/src/assets/gullitstats.png" alt="Gullit Stats" className="overlay overlay-left" />
+                </div>
+
+                <div className="promo-card">
+                    <img src="/src/assets/zlatan.jpg" alt="Zlatan" className="promo-image" />
+                    <img src="/src/assets/thegoat.png" alt="GOAT" className="overlay overlay-bottom" />
+                </div>
+
+                <div className="promo-card">
+                    <img src="/src/assets/cruyf.jpg" alt="Cruyff" className="promo-image" />
+                    <img src="/src/assets/cruyffarrow.png" alt="Cruyff Arrow" className="overlay overlay-right" />
+                </div>
             </div>
+
 
 
             {/* Home Container */}
