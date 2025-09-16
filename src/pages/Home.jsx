@@ -49,22 +49,33 @@ function Home() {
 
             {/* Home Container */}
             <div className="home-container">
-                <section className="categories">
-                    <h2>Våra T-shirts</h2>
-                    <div className="category-grid">
-                        {products.map(product => (
-                            <Link to={`/products/${product.slug}`} key={product.id} className="category">
-                                <img src={product.image} alt={product.name} className="category-image" />
-                                <p className="product-name">{product.name}</p>
-                                <p className="product-price">{product.price} SEK</p>
-                                <div className="heart-icon">
-                                    <FaRegHeart />
-                                </div>
-                            </Link>
-                        ))}
-                    </div>
-                </section>
-            </div>
+  <section className="categories">
+    <h2>Våra T-shirts</h2>
+
+    {/* 🔽 keep only Premier League products */}
+    {(() => {
+      const premierOnly = products.filter(p =>
+        p.category_slug === 'premier-league' ||                 // best case
+        (p.category && p.category.toLowerCase() === 'premier league') || // if API returns name
+        p.category_id === 1                                     // fallback if you only have id=1
+      );
+
+      return (
+        <div className="category-grid">
+          {premierOnly.map(product => (
+            <Link to={`/products/${product.slug}`} key={product.id} className="category">
+              <img src={product.image} alt={product.name} className="category-image" />
+              <p className="product-name">{product.name}</p>
+              <p className="product-price">{product.price} SEK</p>
+              <div className="heart-icon"><FaRegHeart /></div>
+            </Link>
+          ))}
+        </div>
+      );
+    })()}
+  </section>
+</div>
+
         </>
     );
 }
