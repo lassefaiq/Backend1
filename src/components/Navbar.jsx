@@ -52,7 +52,7 @@ const Navbar = ({ searchTerm, setSearchTerm }) => {
             Kategorier <span className="caret">▾</span>
           </button>
           <ul className="dropdown-menu" role="menu">
-            <li><NavLink to="/" className={({isActive}) => (isActive ? "active" : "")}>Premier League</NavLink></li>
+            <li><NavLink to="/category/premier-league" className={({isActive}) => (isActive ? "active" : "")}>Premier League</NavLink></li>
             <li><NavLink to="/category/vm"             className={({isActive}) => (isActive ? "active" : "")}>VM</NavLink></li>
             <li><NavLink to="/category/sverige"        className={({isActive}) => (isActive ? "active" : "")}>Sverige</NavLink></li>
           </ul>
