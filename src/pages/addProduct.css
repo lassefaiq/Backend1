@@ -21,11 +21,19 @@
     margin-bottom: 20px;
 }
 
+h2{
+    color: #FFFFFF;
+}
+
+label{
+    color: #FFFFFF;
+}
+
 .admin-form {
     display: flex;
     flex-direction: column;
     gap: 15px;
-    max-width: 400px;
+    max-width: 640px;           /* a little wider to fit a grid */
 }
 
 .admin-form label {
@@ -62,10 +70,70 @@
     background-color: #333;
 }
 
-h2{
+/* ===== Category picker (radios styled as pills) ===== */
+.category-field {
+    border: none;                     /* cleaner */
+    padding: 0;
+    margin-top: 4px;
     color: #FFFFFF;
 }
 
-label{
+.category-field legend {
+    margin-bottom: 8px;
+    padding: 0;
+    font-weight: 700;
     color: #FFFFFF;
+}
+
+/* Responsive grid: grows nicely when you add more categories */
+.category-options {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 10px;
+}
+
+/* Each option is a label with a hidden radio + a visible pill */
+.category-option {
+    position: relative;
+}
+
+/* Visually hide the radio but keep it accessible */
+.category-option input[type="radio"] {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    cursor: pointer;
+}
+
+/* The pill */
+.category-option span {
+    display: block;
+    text-align: center;
+    padding: 10px 12px;
+    border-radius: 10px;
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.18);
+    color: #FFFFFF;
+    font-weight: 600;
+    user-select: none;
+    transition: background .15s ease, border-color .15s ease, transform .05s ease;
+}
+
+/* Hover & focus */
+.category-option:hover span {
+    background: rgba(255,255,255,0.12);
+}
+
+.category-option input[type="radio"]:focus-visible + span {
+    outline: 2px solid #89CFF0;
+    outline-offset: 2px;
+}
+
+/* Selected state */
+.category-option input[type="radio"]:checked + span {
+    background: #000000;
+    border-color: #000000;
+    transform: translateY(-1px);
 }
