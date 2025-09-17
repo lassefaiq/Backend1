@@ -1,26 +1,33 @@
-import { NavLink, useLocation, useNavigate } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import { useState, useRef, useEffect } from "react";
+import axios from "axios";
 import { FaSearch, FaRegSmile, FaRegHeart, FaShoppingBag } from "react-icons/fa";
 import "./Navbar.css";
 
 const Navbar = ({ searchTerm, setSearchTerm }) => {
   const navigate = useNavigate();
-  const location = useLocation();
 
-  // ▼ click-to-open dropdown state
-  const [open, setOpen] = useState(false);
-  const dropdownRef = useRef(null);
+  // dropdown open/close
+  const [openCat, setOpenCat] = useState(false);
+  const catRef = useRef(null);
 
-  // close on route change
-  useEffect(() => { setOpen(false); }, [location.pathname]);
+  // categories from backend
+  const [categories, setCategories] = useState([]);
 
-  // close when clicking outside
+  useEffect(() => {
+    axios
+      .get("http://localhost:3001/categories")
+      .then(res => setCategories(res.data || []))
+      .catch(err => console.error("Failed to load categories:", err));
+  }, []);
+
+  // close dropdown when clicking outside
   useEffect(() => {
     const onDocClick = (e) => {
-      if (dropdownRef.current && !dropdownRef.current.contains(e.target)) setOpen(false);
+      if (catRef.current && !catRef.current.contains(e.target)) setOpenCat(false);
     };
-    document.addEventListener("mousedown", onDocClick);
-    return () => document.removeEventListener("mousedown", onDocClick);
+    document.addEventListener("click", onDocClick);
+    return () => document.removeEventListener("click", onDocClick);
   }, []);
 
   const handleSearch = (e) => {
@@ -40,21 +47,30 @@ const Navbar = ({ searchTerm, setSearchTerm }) => {
         <li><NavLink to="/" className={({ isActive }) => (isActive ? "active" : "")}>Herr</NavLink></li>
         <li><NavLink to="/" className={({ isActive }) => (isActive ? "active" : "")}>Dam</NavLink></li>
 
-        {/* ▼ Dropdown (click-to-open) */}
-        <li className={`dropdown ${open ? "open" : ""}`} ref={dropdownRef}>
+        {/* ▼ Categories (click to open, items loaded from API) */}
+        <li className={`dropdown ${openCat ? "open" : ""}`} ref={catRef}>
           <button
             type="button"
             className="dropdown-toggle"
-            onClick={() => setOpen(o => !o)}
+            onClick={() => setOpenCat(o => !o)}
             aria-haspopup="true"
-            aria-expanded={open}
+            aria-expanded={openCat}
           >
             Kategorier <span className="caret">▾</span>
           </button>
           <ul className="dropdown-menu" role="menu">
-            <li><NavLink to="/category/premier-league" className={({isActive}) => (isActive ? "active" : "")}>Premier League</NavLink></li>
-            <li><NavLink to="/category/vm"             className={({isActive}) => (isActive ? "active" : "")}>VM</NavLink></li>
-            <li><NavLink to="/category/sverige"        className={({isActive}) => (isActive ? "active" : "")}>Sverige</NavLink></li>
+            {categories.map(c => (
+              <li key={c.id}>
+                <NavLink
+                  to={`/category/${c.slug}`}
+                  className={({ isActive }) => (isActive ? "active" : "")}
+                  onClick={() => setOpenCat(false)}
+                  role="menuitem"
+                >
+                  {c.name}
+                </NavLink>
+              </li>
+            ))}
           </ul>
         </li>
 
@@ -85,4 +101,3 @@ const Navbar = ({ searchTerm, setSearchTerm }) => {
 };
 
 export default Navbar;
-
