@@ -76,7 +76,7 @@
 .accordion-footer {
     display: none; 
     width: 100%;
-    background-color: #89CFF0;
+    background-color: #2D4739;
     padding: 10px;
     text-align: left;
 }
@@ -84,7 +84,7 @@
 
 .accordion-footer details {
     margin: 5px 0;
-    background-color: #89CFF0; 
+    background-color: #2D4739; 
     padding: 10px;
     border-radius: 0;
     border: none;
@@ -96,7 +96,7 @@
     font-weight: bold;
     cursor: pointer;
     padding: 10px;
-    background-color: #89CFF0;
+    background-color: #2D4739;
     border: none;
     width: 100%;
     text-align: left;
