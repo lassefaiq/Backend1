@@ -9,13 +9,13 @@ const AddProduct = () => {
   const [formData, setFormData] = useState({
     name: "",
     description: "",
-    image: "",
     sku: "",
     price: "",
-    category_id: "",     // ✅ new
+    category_id: "",
   });
 
-  const [categories, setCategories] = useState([]); // ✅ load categories
+  const [imageFile, setImageFile] = useState(null);
+  const [categories, setCategories] = useState([]);
 
   useEffect(() => {
     axios
@@ -26,28 +26,36 @@ const AddProduct = () => {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    // store category_id as number
     setFormData((fd) => ({
       ...fd,
       [name]: name === "category_id" ? Number(value) : value,
     }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (!formData.category_id) {
-      alert("Välj en kategori innan du sparar.");
-      return;
-    }
+    if (!imageFile) return alert("Välj en produktbild.");
+    if (!formData.category_id) return alert("Välj en kategori.");
 
-    axios
-      .post("http://localhost:3001/products", formData)
-      .then(() => {
-        alert("Produkt tillagd!");
-        navigate("/admin");
-      })
-      .catch((err) => console.error(err));
+    const data = new FormData();
+    data.append("name", formData.name);
+    data.append("description", formData.description);
+    data.append("sku", formData.sku);
+    data.append("price", formData.price);
+    data.append("category_id", formData.category_id);
+    data.append("image", imageFile); // <-- the file
+
+    try {
+      await axios.post("http://localhost:3001/products", data, {
+        headers: { "Content-Type": "multipart/form-data" },
+      });
+      alert("Produkt tillagd!");
+      navigate("/admin");
+    } catch (err) {
+      console.error(err);
+      alert("Kunde inte lägga till produkten.");
+    }
   };
 
   return (
@@ -81,12 +89,11 @@ const AddProduct = () => {
           </label>
 
           <label>
-            Bild (URL):
+            Bild:
             <input
-              type="text"
-              name="image"
-              value={formData.image}
-              onChange={handleChange}
+              type="file"
+              accept="image/*"
+              onChange={(e) => setImageFile(e.target.files?.[0] || null)}
               required
             />
           </label>
@@ -113,7 +120,6 @@ const AddProduct = () => {
             />
           </label>
 
-          {/* ✅ Category tick box (single choice via radios) */}
           <fieldset className="category-field">
             <legend>Kategori</legend>
             <div className="category-options">

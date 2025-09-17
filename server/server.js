@@ -9,14 +9,12 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-// point to TOP-LEVEL /public/images (one level up from /server)
+/* ---------- Static uploads folder (TOP-LEVEL /public/images) ---------- */
 const imagesDir = path.resolve(__dirname, "..", "public", "images");
 if (!fs.existsSync(imagesDir)) fs.mkdirSync(imagesDir, { recursive: true });
-
-// serve uploaded images from the correct folder
 app.use("/images", express.static(imagesDir));
 
-/* ---------- File upload setup (multer) ---------- */
+/* ---------- Multer setup for file uploads ---------- */
 const storage = multer.diskStorage({
   destination: (_req, _file, cb) => cb(null, imagesDir),
   filename: (_req, file, cb) => {
@@ -38,10 +36,11 @@ function slugify(str) {
     .replace(/[^a-z0-9-]/g, "");
 }
 
+/* ==================== PRODUCTS ==================== */
+
 /**
  * GET /products?category=<slug>&search=<term>
- * - Returns products (optionally filtered by category slug and/or search terms)
- * - Includes category_slug, category_name, and category_image for each product
+ * Returns products (optionally filtered), including category fields.
  */
 app.get("/products", (req, res) => {
   const { category, search } = req.query;
@@ -78,7 +77,7 @@ app.get("/products", (req, res) => {
 
 /**
  * GET /products/slug/:slug
- * - Single product by slug (also returns category fields)
+ * Single product by slug (with category fields).
  */
 app.get("/products/slug/:slug", (req, res) => {
   const { slug } = req.params;
@@ -101,7 +100,7 @@ app.get("/products/slug/:slug", (req, res) => {
 
 /**
  * DELETE /products/:id
- * - Delete product by id
+ * Delete product by id.
  */
 app.delete("/products/:id", (req, res) => {
   const { id } = req.params;
@@ -116,39 +115,56 @@ app.delete("/products/:id", (req, res) => {
 
 /**
  * POST /products
- * - Create product (assigns a category_id)
+ * Create product with image upload (multipart form).
+ * Fields: name, description, sku, price, category_id, image(file)
+ * Saves file to /public/images and stores path in products.image.
  */
-app.post("/products", (req, res) => {
-  const { name, sku, description, price, image, category_id } = req.body;
+app.post("/products", upload.single("image"), (req, res) => {
+  const { name, sku, description, price, category_id } = req.body;
 
-  if (!name || !sku || !description || !price || !image) {
+  if (!name || !sku || !description || !price) {
     return res.status(400).json({ error: "Missing required fields" });
   }
   if (!category_id) {
     return res.status(400).json({ error: "Missing category_id" });
   }
+  if (!req.file) {
+    return res.status(400).json({ error: "Missing image file" });
+  }
 
   const slug = slugify(name);
+  const imagePath = `/images/${req.file.filename}`;
 
   const sql = `
     INSERT INTO products (name, sku, description, price, image, slug, category_id)
     VALUES (?, ?, ?, ?, ?, ?, ?)
   `;
-  const params = [name, sku, description, price, image, slug, Number(category_id)];
+  const params = [
+    name,
+    sku,
+    description,
+    Number(price),
+    imagePath,
+    slug,
+    Number(category_id),
+  ];
 
   db.run(sql, params, function (err) {
     if (err) {
       console.error("❌ Error inserting product:", err.message);
       return res.status(500).json({ error: err.message });
     }
-    console.log("✅ Product added with ID:", this.lastID);
-    res.status(201).json({ message: "Product added", id: this.lastID, slug });
+    res
+      .status(201)
+      .json({ message: "Product added", id: this.lastID, slug, image: imagePath });
   });
 });
 
+/* ==================== CATEGORIES ==================== */
+
 /**
  * GET /categories
- * - List categories (id, name, slug, image)
+ * List categories (id, name, slug, image)
  */
 app.get("/categories", (req, res) => {
   db.all(
@@ -163,9 +179,9 @@ app.get("/categories", (req, res) => {
 
 /**
  * POST /categories
- * - Create category with image upload (multipart form)
- *   Fields: name (text, max 25), image (file)
- *   Saves image to /public/images and stores path in categories.image
+ * Create category with image upload (multipart form).
+ * Fields: name (<=25 chars), image(file)
+ * Saves file to /public/images and stores path in categories.image.
  */
 app.post("/categories", upload.single("image"), (req, res) => {
   const name = (req.body.name || "").trim();
@@ -186,6 +202,7 @@ app.post("/categories", upload.single("image"), (req, res) => {
   );
 });
 
-//  Start server
+/* ---------- Start server ---------- */
 const PORT = 3001;
 app.listen(PORT, () => console.log(`✅ Server running on port ${PORT}`));
+
