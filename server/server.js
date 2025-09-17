@@ -84,13 +84,16 @@ app.delete("/products/:id", (req, res) => {
 
 /**
  * POST /products
- * - Create product (current version does not assign a category)
+ * - Create product (now also assigns a category_id)
  */
 app.post("/products", (req, res) => {
-  const { name, sku, description, price, image } = req.body;
+  const { name, sku, description, price, image, category_id } = req.body;
 
   if (!name || !sku || !description || !price || !image) {
     return res.status(400).json({ error: "Missing required fields" });
+  }
+  if (!category_id) {
+    return res.status(400).json({ error: "Missing category_id" });
   }
 
   // create slug from name (handling å, ä, ö)
@@ -101,18 +104,20 @@ app.post("/products", (req, res) => {
     .replace(/ö/g, "o")
     .replace(/\s+/g, "-");
 
-  db.run(
-    "INSERT INTO products (name, sku, description, price, image, slug) VALUES (?, ?, ?, ?, ?, ?)",
-    [name, sku, description, price, image, slug],
-    function (err) {
-      if (err) {
-        console.error("❌ Error inserting product:", err.message);
-        return res.status(500).json({ error: err.message });
-      }
-      console.log("✅ Product added with ID:", this.lastID);
-      res.status(201).json({ message: "Product added", id: this.lastID, slug });
+  const sql = `
+    INSERT INTO products (name, sku, description, price, image, slug, category_id)
+    VALUES (?, ?, ?, ?, ?, ?, ?)
+  `;
+  const params = [name, sku, description, price, image, slug, Number(category_id)];
+
+  db.run(sql, params, function (err) {
+    if (err) {
+      console.error("❌ Error inserting product:", err.message);
+      return res.status(500).json({ error: err.message });
     }
-  );
+    console.log("✅ Product added with ID:", this.lastID);
+    res.status(201).json({ message: "Product added", id: this.lastID, slug });
+  });
 });
 
 /**
