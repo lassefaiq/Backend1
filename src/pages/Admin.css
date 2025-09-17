@@ -12,6 +12,7 @@
 .sidebar h2 {
     font-size: 20px;
     margin-bottom: 10px;
+    color: #FFFFFF;
 }
 
 .sidebar nav ul {
@@ -25,7 +26,7 @@
 
 .sidebar nav ul li a {
     text-decoration: none;
-    color: black;
+    color: #2D4739;
     font-weight: bold;
 }
 
@@ -56,11 +57,11 @@
 }
 
 .product-table th {
-    background-color: #89CFF0;
+    background-color: #FFFFFF;
 }
 
 .delete-btn {
-    background-color: #89CFF0;
+    background-color: #000000;
     color: white;
     border: none;
     padding: 6px 12px;
@@ -70,4 +71,11 @@
 
 .delete-btn:hover {
     background-color: #89CFF0;
+}
+tbody{
+    background-color: #FFFFFF;
+}
+
+h1{
+    color: #FFFFFF;
 }
