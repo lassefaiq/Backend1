@@ -1,10 +1,42 @@
 const express = require("express");
 const cors = require("cors");
+const path = require("path");
+const fs = require("fs");
+const multer = require("multer");
 const db = require("./db");
 
 const app = express();
 app.use(cors());
 app.use(express.json());
+
+// point to TOP-LEVEL /public/images (one level up from /server)
+const imagesDir = path.resolve(__dirname, "..", "public", "images");
+if (!fs.existsSync(imagesDir)) fs.mkdirSync(imagesDir, { recursive: true });
+
+// serve uploaded images from the correct folder
+app.use("/images", express.static(imagesDir));
+
+/* ---------- File upload setup (multer) ---------- */
+const storage = multer.diskStorage({
+  destination: (_req, _file, cb) => cb(null, imagesDir),
+  filename: (_req, file, cb) => {
+    const safe = (file.originalname || "upload")
+      .toLowerCase()
+      .replace(/\s+/g, "-")
+      .replace(/[^a-z0-9._-]/g, "");
+    cb(null, `${Date.now()}-${safe}`);
+  },
+});
+const upload = multer({ storage });
+
+/* ---------- Helpers ---------- */
+function slugify(str) {
+  return String(str || "")
+    .toLowerCase()
+    .replace(/å/g, "a").replace(/ä/g, "a").replace(/ö/g, "o")
+    .replace(/\s+/g, "-")
+    .replace(/[^a-z0-9-]/g, "");
+}
 
 /**
  * GET /products?category=<slug>&search=<term>
@@ -84,7 +116,7 @@ app.delete("/products/:id", (req, res) => {
 
 /**
  * POST /products
- * - Create product (now also assigns a category_id)
+ * - Create product (assigns a category_id)
  */
 app.post("/products", (req, res) => {
   const { name, sku, description, price, image, category_id } = req.body;
@@ -96,13 +128,7 @@ app.post("/products", (req, res) => {
     return res.status(400).json({ error: "Missing category_id" });
   }
 
-  // create slug from name (handling å, ä, ö)
-  const slug = name
-    .toLowerCase()
-    .replace(/å/g, "a")
-    .replace(/ä/g, "a")
-    .replace(/ö/g, "o")
-    .replace(/\s+/g, "-");
+  const slug = slugify(name);
 
   const sql = `
     INSERT INTO products (name, sku, description, price, image, slug, category_id)
@@ -131,6 +157,31 @@ app.get("/categories", (req, res) => {
     (err, rows) => {
       if (err) return res.status(500).json({ error: err.message });
       res.json(rows);
+    }
+  );
+});
+
+/**
+ * POST /categories
+ * - Create category with image upload (multipart form)
+ *   Fields: name (text, max 25), image (file)
+ *   Saves image to /public/images and stores path in categories.image
+ */
+app.post("/categories", upload.single("image"), (req, res) => {
+  const name = (req.body.name || "").trim();
+  if (!name) return res.status(400).json({ error: "Missing name" });
+  if (name.length > 25) return res.status(400).json({ error: "Name too long (max 25)" });
+  if (!req.file) return res.status(400).json({ error: "Missing image file" });
+
+  const slug = slugify(name);
+  const imagePath = `/images/${req.file.filename}`;
+
+  db.run(
+    `INSERT INTO categories (name, slug, image) VALUES (?, ?, ?)`,
+    [name, slug, imagePath],
+    function (err) {
+      if (err) return res.status(500).json({ error: err.message });
+      res.status(201).json({ id: this.lastID, name, slug, image: imagePath });
     }
   );
 });

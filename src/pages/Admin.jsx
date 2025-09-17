@@ -74,6 +74,9 @@ const Admin = () => {
         <div className="admin-actions-row">
           <Link to="/admin/products/new" className="new-product-button">Ny produkt</Link>
 
+        {/* NEW button */}
+          <Link to="/admin/categories/new" className="new-product-button">Ny kategori</Link>
+
           {/* Kategorier dropdown */}
           <div className={`category-dropdown ${openCat ? "open" : ""}`} ref={catRef}>
             <button

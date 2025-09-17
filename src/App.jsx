@@ -8,6 +8,7 @@ import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
 import AddProduct from "./pages/addProduct";
 import CategoryPage from "./pages/CategoryPage";
+import AddCategory from "./pages/addCategory";
 
 function Layout({ children, searchTerm, setSearchTerm }) {
   const location = useLocation();
@@ -39,6 +40,7 @@ function App() {
                 <Route path="/category/:slug" element={<CategoryPage />} />
                 <Route path="/admin/*" element={<Admin />} />
                 <Route path="/admin/products/new" element={<AddProduct />} />
+                <Route path="/admin/categories/new" element={<AddCategory />} />
               </Routes>
             </Layout>
           }
