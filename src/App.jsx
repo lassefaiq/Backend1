@@ -6,7 +6,7 @@ import ProductDetails from "./pages/ProductDetails";
 import Admin from "./pages/Admin";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
-import AddProduct from "./pages/AddProduct";
+import AddProduct from "./pages/addProduct";
 import CategoryPage from "./pages/CategoryPage";
 
 function Layout({ children, searchTerm, setSearchTerm }) {
