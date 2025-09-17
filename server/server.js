@@ -9,15 +9,16 @@ app.use(express.json());
 /**
  * GET /products?category=<slug>&search=<term>
  * - Returns products (optionally filtered by category slug and/or search terms)
- * - Includes category_slug and category_name for each product
+ * - Includes category_slug, category_name, and category_image for each product
  */
 app.get("/products", (req, res) => {
   const { category, search } = req.query;
 
   let sql = `
     SELECT p.*,
-           c.slug AS category_slug,
-           c.name AS category_name
+           c.slug  AS category_slug,
+           c.name  AS category_name,
+           c.image AS category_image
     FROM products p
     LEFT JOIN categories c ON c.id = p.category_id
     WHERE 1=1
@@ -45,14 +46,15 @@ app.get("/products", (req, res) => {
 
 /**
  * GET /products/slug/:slug
- * - Single product by slug
+ * - Single product by slug (also returns category fields)
  */
 app.get("/products/slug/:slug", (req, res) => {
   const { slug } = req.params;
   db.get(
     `SELECT p.*,
-            c.slug AS category_slug,
-            c.name AS category_name
+            c.slug  AS category_slug,
+            c.name  AS category_name,
+            c.image AS category_image
      FROM products p
      LEFT JOIN categories c ON c.id = p.category_id
      WHERE p.slug = ?`,
@@ -115,11 +117,11 @@ app.post("/products", (req, res) => {
 
 /**
  * GET /categories
- * - List categories (id, name, slug)
+ * - List categories (id, name, slug, image)
  */
 app.get("/categories", (req, res) => {
   db.all(
-    "SELECT id, name, slug FROM categories ORDER BY name",
+    "SELECT id, name, slug, image FROM categories ORDER BY name",
     [],
     (err, rows) => {
       if (err) return res.status(500).json({ error: err.message });
