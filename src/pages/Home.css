@@ -27,22 +27,22 @@ html, body {
     margin: 0;
 }
 
-/* --- container (keeps green gutters so overlays can grow) --- */
+
 .promo-section {
   --edge-pad: clamp(16px, 5vw, 80px);
-  --safe:     clamp(14px, 2.2vw, 40px);  /* bigger no-touch buffer */
+  --safe:     clamp(14px, 2.2vw, 40px);  
   display: flex;
   justify-content: center;
   align-items: flex-start;
   gap: clamp(16px, 3vw, 32px);
   padding: 20px var(--edge-pad);
-  max-width: 1200px;     /* keep if you want the same page width */
+  max-width: 1200px;    
   margin: 0 auto;
 }
 
 .promo-card {
   position: relative;
-  width: clamp(260px, 32vw, 420px);  /* circle size */
+  width: clamp(260px, 32vw, 420px);  
   aspect-ratio: 1 / 1;
   overflow: visible;
 }
@@ -54,36 +54,36 @@ html, body {
   border-radius: 50%;
 }
 
-/* ---------- overlays (big + with guaranteed gap) ---------- */
+
 
 .overlay { position: absolute; pointer-events: none; height: auto; }
 
 
-/* LEFT — larger + further out */
+
 .overlay-left {
   width: clamp(260px, 30vw, 560px);
-  left: calc(-63% - var(--safe));   /* push further left */
+  left: calc(-63% - var(--safe));   
   top: 40%;
   transform: translateY(-50%);
 }
 
-/* BOTTOM — larger + lower */
+
 .overlay-bottom {
   width: clamp(280px, 36vw, 600px);
   left: 17%;
-  bottom: calc(-33% - var(--safe)); /* push further down */
+  bottom: calc(-33% - var(--safe)); 
   transform: translateX(-50%);
 }
 
-/* RIGHT — larger + further out */
+
 .overlay-right {
   width: clamp(260px, 30vw, 560px);
-  right: calc(-60% - var(--safe));  /* push further right */
+  right: calc(-60% - var(--safe));  
   top: 90%;
   transform: translateY(-50%);
 }
 
-/* Your breakpoints */
+
 @media (max-width: 1024px) {
   .promo-card     { width: clamp(240px, 34vw, 380px); }
   .overlay-left   { left: calc(-34% - var(--safe));  width: clamp(200px, 32vw, 440px); }
@@ -92,7 +92,7 @@ html, body {
 }
 
 @media (max-width: 640px) {
-  .promo-section { display: none; } /* if you already hide it on small screens */
+  .promo-section { display: none; } 
 }
 
 

@@ -22,12 +22,10 @@ function Home() {
       <HeroSection />
       <PromoSection />
 
-      {/* Home Container */}
       <div className="home-container">
         <section className="categories">
           <h2>Våra T-shirts</h2>
 
-          {/* 🔽 keep only Premier League products */}
           {(() => {
             const premierOnly = products.filter(
               (p) =>

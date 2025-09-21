@@ -17,7 +17,7 @@ const ProductList = () => {
       .catch(err => console.error("Error fetching products:", err));
   }, []);
 
-  // ✅ Split the search into terms and match ANY term (OR)
+
   const terms = (searchQuery.toLowerCase().match(/\w+/g) || []);
   const filteredProducts = terms.length === 0
     ? products

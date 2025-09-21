@@ -6,13 +6,13 @@ import "./Admin.css";
 const Admin = () => {
   const [products, setProducts] = useState([]);
   const [categories, setCategories] = useState([]);
-  const [selectedCat, setSelectedCat] = useState(null); // { id, name, slug } or null
+  const [selectedCat, setSelectedCat] = useState(null); 
 
-  // dropdown state
+  
   const [openCat, setOpenCat] = useState(false);
   const catRef = useRef(null);
 
-  // load categories once
+  
   useEffect(() => {
     axios
       .get("http://localhost:3001/categories")
@@ -20,7 +20,7 @@ const Admin = () => {
       .catch((err) => console.error(err));
   }, []);
 
-  // fetch products (all or filtered by selected category)
+  
   useEffect(() => {
     const params = selectedCat ? { category: selectedCat.slug } : {};
     axios
@@ -29,7 +29,7 @@ const Admin = () => {
       .catch((err) => console.error("Error fetching products:", err));
   }, [selectedCat]);
 
-  // close dropdown when clicking outside
+  
   useEffect(() => {
     const onDocClick = (e) => {
       if (catRef.current && !catRef.current.contains(e.target)) setOpenCat(false);
@@ -38,7 +38,7 @@ const Admin = () => {
     return () => document.removeEventListener("mousedown", onDocClick);
   }, []);
 
-  // delete product
+  
   const handleDelete = (id) => {
     if (window.confirm("Är du säker på att du vill ta bort produkten?")) {
       axios
@@ -52,7 +52,7 @@ const Admin = () => {
   };
 
   const handleSelectCategory = (cat) => {
-    setSelectedCat(cat); // null = show all
+    setSelectedCat(cat); 
     setOpenCat(false);
   };
 
@@ -70,14 +70,14 @@ const Admin = () => {
       <div className="admin-content">
         <h1>Produkter</h1>
 
-        {/* Actions row */}
+        
         <div className="admin-actions-row">
           <Link to="/admin/products/new" className="new-product-button">Ny produkt</Link>
 
-        {/* NEW button */}
+        
           <Link to="/admin/categories/new" className="new-product-button">Ny kategori</Link>
 
-          {/* Kategorier dropdown */}
+          
           <div className={`category-dropdown ${openCat ? "open" : ""}`} ref={catRef}>
             <button
               type="button"

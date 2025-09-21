@@ -6,7 +6,7 @@ const db = new sqlite3.Database("./database.sqlite", (err) => {
 });
 
 db.serialize(() => {
-  // --- PRODUCTS (base table, then ensure extra columns exist) ---
+
   db.run(`
     CREATE TABLE IF NOT EXISTS products (
       id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -17,7 +17,7 @@ db.serialize(() => {
     )
   `);
 
-  // Add missing columns on existing DBs (safe, no data loss)
+  
   db.all(`PRAGMA table_info(products)`, (err, cols) => {
     if (err) return console.error(err);
     const has = (n) => cols.some((c) => c.name === n);
@@ -27,10 +27,10 @@ db.serialize(() => {
     if (!has("category_id")) db.run(`ALTER TABLE products ADD COLUMN category_id INTEGER REFERENCES categories(id)`);
   });
 
-  // Helpful index for joins/filtering
+  
   db.run(`CREATE INDEX IF NOT EXISTS idx_products_category_id ON products(category_id)`);
 
-  // --- CATEGORIES (with image) ---
+  
   db.run(`
     CREATE TABLE IF NOT EXISTS categories (
       id    INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -40,7 +40,7 @@ db.serialize(() => {
     )
   `);
 
-  // Add image column if the table existed without it
+  
   db.all(`PRAGMA table_info(categories)`, (err, cols) => {
     if (err) return console.error(err);
     const hasImage = cols.some((c) => c.name === "image");

@@ -1,4 +1,3 @@
-// src/components/PromoSection.jsx
 export default function PromoSection() {
   return (
     <div className="promo-section">

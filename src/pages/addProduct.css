@@ -33,7 +33,7 @@ label{
     display: flex;
     flex-direction: column;
     gap: 15px;
-    max-width: 640px;           /* a little wider to fit a grid */
+    max-width: 640px;          
 }
 
 .admin-form label {
@@ -70,9 +70,9 @@ label{
     background-color: #333;
 }
 
-/* ===== Category picker (radios styled as pills) ===== */
+
 .category-field {
-    border: none;                     /* cleaner */
+    border: none;                    
     padding: 0;
     margin-top: 4px;
     color: #FFFFFF;
@@ -85,19 +85,19 @@ label{
     color: #FFFFFF;
 }
 
-/* Responsive grid: grows nicely when you add more categories */
+
 .category-options {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
     gap: 10px;
 }
 
-/* Each option is a label with a hidden radio + a visible pill */
+
 .category-option {
     position: relative;
 }
 
-/* Visually hide the radio but keep it accessible */
+
 .category-option input[type="radio"] {
     position: absolute;
     inset: 0;
@@ -107,7 +107,7 @@ label{
     cursor: pointer;
 }
 
-/* The pill */
+
 .category-option span {
     display: block;
     text-align: center;
@@ -121,7 +121,7 @@ label{
     transition: background .15s ease, border-color .15s ease, transform .05s ease;
 }
 
-/* Hover & focus */
+
 .category-option:hover span {
     background: rgba(255,255,255,0.12);
 }
@@ -131,7 +131,7 @@ label{
     outline-offset: 2px;
 }
 
-/* Selected state */
+
 .category-option input[type="radio"]:checked + span {
     background: #000000;
     border-color: #000000;

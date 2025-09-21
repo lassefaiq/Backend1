@@ -7,11 +7,11 @@ import "./Navbar.css";
 const Navbar = ({ searchTerm, setSearchTerm }) => {
   const navigate = useNavigate();
 
-  // dropdown open/close
+  
   const [openCat, setOpenCat] = useState(false);
   const catRef = useRef(null);
 
-  // categories from backend
+  
   const [categories, setCategories] = useState([]);
 
   useEffect(() => {
@@ -21,7 +21,7 @@ const Navbar = ({ searchTerm, setSearchTerm }) => {
       .catch(err => console.error("Failed to load categories:", err));
   }, []);
 
-  // close dropdown when clicking outside
+  
   useEffect(() => {
     const onDocClick = (e) => {
       if (catRef.current && !catRef.current.contains(e.target)) setOpenCat(false);
@@ -47,7 +47,7 @@ const Navbar = ({ searchTerm, setSearchTerm }) => {
         <li><NavLink to="/" className={({ isActive }) => (isActive ? "active" : "")}>Herr</NavLink></li>
         <li><NavLink to="/" className={({ isActive }) => (isActive ? "active" : "")}>Dam</NavLink></li>
 
-        {/* ▼ Categories (click to open, items loaded from API) */}
+        
         <li className={`dropdown ${openCat ? "open" : ""}`} ref={catRef}>
           <button
             type="button"
@@ -80,7 +80,7 @@ const Navbar = ({ searchTerm, setSearchTerm }) => {
         <li><NavLink to="/" className={({ isActive }) => (isActive ? "active" : "")}>Freaky Mag.</NavLink></li>
       </ul>
 
-      {/* Search Bar */}
+      
       <form className="search-bar" onSubmit={handleSearch}>
         <input
           type="text"

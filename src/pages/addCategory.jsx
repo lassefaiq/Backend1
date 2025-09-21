@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import "./AddProduct.css"; // reuse the same CSS as AddProduct
+import "./AddProduct.css"; 
 
 const AddCategory = () => {
   const navigate = useNavigate();
