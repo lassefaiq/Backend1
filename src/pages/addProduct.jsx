@@ -35,16 +35,26 @@ const AddProduct = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (!imageFile) return alert("Välj en produktbild.");
-    if (!formData.category_id) return alert("Välj en kategori.");
+    if (!formData.name.trim() || formData.name.trim().length > 25) {
+      alert("Namn får vara max 25 tecken.");
+      return;
+    }
+    if (!imageFile) {
+      alert("Välj en produktbild.");
+      return;
+    }
+    if (!formData.category_id) {
+      alert("Välj en kategori.");
+      return;
+    }
 
     const data = new FormData();
-    data.append("name", formData.name);
+    data.append("name", formData.name.trim());
     data.append("description", formData.description);
     data.append("sku", formData.sku);
     data.append("price", formData.price);
     data.append("category_id", formData.category_id);
-    data.append("image", imageFile); // <-- the file
+    data.append("image", imageFile);
 
     try {
       await axios.post("http://localhost:3001/products", data, {
@@ -73,6 +83,7 @@ const AddProduct = () => {
               type="text"
               name="name"
               value={formData.name}
+              maxLength={25}               
               onChange={handleChange}
               required
             />
